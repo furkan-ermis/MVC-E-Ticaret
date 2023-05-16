@@ -1,0 +1,149 @@
+﻿@model OzSapkaTShirt.Models.Product
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+
+<div>
+    <div class="even_column">
+        <div class="ProductImg">
+                @{
+                if (@Model.DetailImg != null)
+                    {
+                        <img class="DetailImg" src="data:image/png;base64,@Convert.ToBase64String(@Model.DetailImg)" />
+                    }
+                }
+        </div>
+        <div class="DetailContainer">
+           <div class="DetailName">
+                @Model.Name
+                @Model.Description
+           </div>
+           <div class="DetailPrice">
+                @Model.Price <span>$</span>
+           </div>
+           <div class="DetailColor">
+                <span>Renk :</span>@Model.Color
+           </div>
+
+
+                   
+            @if (Model.CategoryId == 0)
+            {
+                <div>Beden : <span id="_size">Std</span></div>
+
+                <div class="Sizes">
+
+                    <input asp-for="HatSize" type="button" value="Std" class="btn-Size _active" />
+                    <span asp-validation-for="HatSize" class="text-danger"></span>
+                </div>
+            }
+            else
+            {
+           <div>Beden : <span id="_size">--</span></div>
+                <div class="Sizes">
+
+                    <input asp-for="SmallSize" type="button" value="S" class="btn-Size" />
+                    <span asp-validation-for="SmallSize" class="text-danger"></span>
+                    <input asp-for="MediumSize" type="button" value="M" class="btn-Size" />
+                    <span asp-validation-for="MediumSize" class="text-danger"></span>
+                    <input asp-for="LargeSize" type="button" value="L" class="btn-Size" />
+                    <span asp-validation-for="LargeSize" class="text-danger"></span>
+                    <input asp-for="XLargeSize" type="button" value="XL" class="btn-Size" />
+                    <span asp-validation-for="XLargeSize" class="text-danger"></span>
+
+                </div>
+            }
+            <script>
+                var getSize = document.getElementById("_size")
+                var buttons = document.getElementsByClassName("btn-Size")
+
+                for (var i = 0; i < buttons.length; i++) {
+                    buttons[i].addEventListener("click", function () {
+                        getSize.innerHTML = this.value
+                        var simdikiButon = document.querySelector("._active");
+                        if (simdikiButon) {
+                            simdikiButon.classList.remove("_active")
+                            console.log(simdikiButon)
+                        }
+                        this.classList.add("_active");
+                        console.log(this)
+
+
+                    })
+                }
+
+                function AddToBasket(productId) {
+                        $("#basketCount").load("@Url.Action("AddToBasket","OrderProducts")/" + productId);
+                    }
+                </script>
+
+
+
+            @{
+                if (@Model.SmallSize == false)
+            {
+                <script>
+                    var smSize = document.getElementById("SmallSize")
+                    smSize.setAttribute("disabled", "true")
+                </script>
+            }if (@Model.MediumSize == false)
+            {
+                <script>
+                    var mSize = document.getElementById("MediumSize")
+                    mSize.setAttribute("disabled", "true")
+                </script>
+            }if (@Model.LargeSize == false)
+            {
+                <script>
+                    var lSize = document.getElementById("LargeSize")
+                    lSize.setAttribute("disabled", "true")
+                </script>
+            }if (@Model.XLargeSize == false)
+            {
+                <script>
+                    var xlSize = document.getElementById("XLargeSize")
+                    xlSize.setAttribute("disabled", "true")
+                </script>
+            }
+            }
+            <div style="margin-bottom:2em;">
+                
+                <span>
+                <select  class="adet">
+                        @for (var i = 1; i < 10; i++)
+                        {
+                           <option value="@i">@i</option>
+                        }
+                </select>
+                </span>
+                <button onclick="AddToBasket(@Model.Id.ToString())" class="btn_Sepet">Sepete Ekle</button>
+            </div>
+
+            <div class="info_title">
+                <h5 style="font-size:11px;border-bottom: 1px solid rgba(0,0,0,0.2);padding-bottom:.6em;">
+                    Kargo & İade
+                </h5>
+                    <p >
+                       - 1130 ₺ Ve Üzeri Siparişlerde Ücretsiz Standart Kargo.
+                    </p>
+                    <p>
+                       - Standart Kargolar 5-15 Gün Içinde Teslim Edilir; Haftanın 5 Günü Teslimat Yapıyoruz.
+                    </p>
+                    <p>- Siparişini Hangi Nedenle Olursa Olsun 30 Gün Içinde Ücretsiz Olarak Iade Edebilirsin.</p>
+            </div>
+        </div>
+        
+
+    </div>
+</div>
+<div>
+    <a asp-action="Edit" asp-controller="Products" asp-area="Admin" asp-route-id="@Model?.Id">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>
+<script>
+    var clicked=(event)=>{
+        e.target
+    }
+</script>

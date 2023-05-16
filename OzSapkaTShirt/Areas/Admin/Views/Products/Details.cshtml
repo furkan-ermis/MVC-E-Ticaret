@@ -1,0 +1,82 @@
+﻿@model OzSapkaTShirt.Models.Product
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <div class="even_column">
+        <div class="ProductImg">
+            @{
+                if (@Model.DetailImg != null)
+                {
+                    <img class="DetailImg" src="data:image/png;base64,@Convert.ToBase64String(@Model.DetailImg)" />
+                }
+            }
+        </div>
+        <div class="DetailContainer">
+            <div class="DetailName">
+                @Model.Name
+                @Model.Description
+            </div>
+            <div class="DetailPrice">
+                @Model.Price <span>₺</span>
+            </div>
+            <div class="DetailColor">
+                <span>Renk :</span>@Model.Color
+            </div>
+            <div>Beden : <span id="_size">M</span></div>
+
+            <div class="Sizes">
+                <input asp-for="SmallSize" type="button" value="S" class="Size" />
+                <span asp-validation-for="SmallSize" class="text-danger"></span>
+                <input asp-for="MediumSize" type="button" value="M" class="Size" />
+                <span asp-validation-for="MediumSize" class="text-danger"></span>
+                <input asp-for="LargeSize" type="button" value="L" class="Size" />
+                <span asp-validation-for="LargeSize" class="text-danger"></span>
+                <input asp-for="XLargeSize" type="button" value="XL" class="Size" />
+                <span asp-validation-for="XLargeSize" class="text-danger"></span>
+
+            </div>
+
+            <div style="margin-bottom:2em;">
+
+                <span>
+                    <select class="adet">
+                        @for (var i = 1; i < 10; i++)
+                        {
+                            <option value="1">@i</option>
+                        }
+                    </select>
+                </span>
+                <button class="btn_Sepet">Sepete Ekle</button>
+            </div>
+
+            <div class="info_title">
+                <h5 style="font-size:11px;border-bottom: 1px solid rgba(0,0,0,0.2);padding-bottom:.6em;">
+                    Kargo & İade
+                </h5>
+                <p>
+                    - 1130 ₺ Ve Üzeri Siparişlerde Ücretsiz Standart Kargo.
+                </p>
+                <p>
+                    - Standart Kargolar 5-15 Gün Içinde Teslim Edilir; Haftanın 5 Günü Teslimat Yapıyoruz.
+                </p>
+                <p>- Siparişini Hangi Nedenle Olursa Olsun 30 Gün Içinde Ücretsiz Olarak Iade Edebilirsin.</p>
+            </div>
+        </div>
+
+
+    </div>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>
+<script>
+    var clicked=(event)=>{
+        e.target
+    }
+</script>

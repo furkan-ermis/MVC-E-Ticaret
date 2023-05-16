@@ -1,0 +1,82 @@
+﻿@using System.Security.Claims;
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - OzSapkaTShirt</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="icon" href="~/favicon2.ico"/>
+    <link rel="stylesheet" href="~/OzSapkaTShirt.styles.css" asp-append-version="true" />
+</head>
+<body>
+    <img class="bgImage" src="~/images/headlg.png" />
+    <div class="wrapper">
+        <header class="">
+            <nav class="navbar">
+                <div class="logo">
+                    <a class="_logo" asp-area="" asp-controller="Home" asp-action="Index">
+                        <img class="_logo-img" src="~/images/logo2.png" />
+                        
+                    </a>
+                </div>
+                <ul class="menu">
+                    <li class="menu_page">
+                        <a class="page" asp-area="Admin" asp-controller="Users" asp-action="Index">Users</a>
+                    </li>
+                    <li class="menu_page">
+                        <a class="page" asp-area="" asp-controller="Products" asp-action="Index">Products</a>
+                    </li>
+
+                    <li class="menu_page">
+                        <a class="page" asp-area="" asp-controller="Home" asp-action="Male">Erkek</a>
+                    </li>
+                    <li class="menu_page">
+                        <a class="page" asp-area="" asp-controller="Home" asp-action="Female">Kadın</a>
+                    </li>
+                </ul>
+                <ul class="registerLogin">
+                        
+
+                    
+                    @if (User.FindFirstValue(ClaimTypes.NameIdentifier) != null)
+                    {
+                        <li class="">
+                            <a asp-area="" asp-action="index" asp-controller="OrderProducts"><img class="sepet" src="~/images/sepet.png" /></a>
+                        </li>
+                        <li class="account">
+                            <a asp-area="" asp-action="Details" asp-controller="Users" >Account</a>
+                        </li>
+                        <li class="logOut">
+                            <a class="page" asp-area="" asp-controller="Users" asp-action="Logout">Logout</a>
+                        </li>
+                    } else
+                    {
+                        <li class="signUp">
+                            <a class="page" asp-area="" asp-controller="Users" asp-action="Create">SignUp</a>
+                        </li>
+                        <li class="logIn">
+                            <a class="page" asp-area="" asp-controller="Users" asp-action="Login">Login</a>
+                        </li>
+                    }
+                </ul>
+            </nav>
+        </header>
+    
+    
+    
+        <main role="main" class="mt-5">
+            @RenderBody()
+        </main>
+
+        <footer class="">
+        </footer>
+    </div>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

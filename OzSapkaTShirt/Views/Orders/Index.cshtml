@@ -1,0 +1,103 @@
+﻿@model List<OzSapkaTShirt.Models.Order>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Sepetim</h1>
+<hr />
+
+<div class="wrapper" id="_wrapper">
+    <div id="_order" class="even_column">
+            @foreach(var order in Model)
+            {
+                @if (order.Status == 0)
+                {
+        <div class="basketCards">
+                        @foreach(var product in order.OrderProducts)
+                        {
+                            <div id="@product.ProductId">
+                            <div class="basketCard">
+                                <a asp-action="Details" class="content" onclick="return false" asp-controller="Products" asp-route-id="@product.ProductId">
+
+                                    <div>
+                                        @if (@product.Product.ThumbNail != null)
+                                        {
+                                            <img class="image" src="data:image/png;base64,@Convert.ToBase64String(@product.Product.ThumbNail)" style="width:100px" />
+                                        }
+                                    </div>
+                                    <div class="card_detail">
+
+                                        <div class="name">@product.Product.Name</div>
+                                        <small class="description">@product.Product.Description</small>
+                                    </div>
+
+                                    <div>
+                                        <div class="quantity">
+                                            <input type="button" onclick="AddToBasket(@product.ProductId.ToString(),-1)" class="btn-Size" value="-" />
+                                            <div id="@product.ProductId-quantity">
+                                                @product.Quantity
+                                            </div>
+                                            <input type="button" onclick="AddToBasket(@product.ProductId.ToString(),1)" class="btn-Size" value="+" />
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div class="total"><span id="@product.ProductId-subtotal">@product.Total</span> ₺</div>
+                                    </div>
+
+                                </a>
+                                <button onclick="DeleteFromBasket(@product.ProductId.ToString());" class="deleteProduct">X</button>
+                            </div>
+                        </div>
+                    }
+                
+                                            
+        </div>
+                
+        <div class="basketDetails">
+                    <div class="d-flex justify-content-between w-100"><span><b>Toplam Tutar :</b></span><span id="total">@order.TotalPrice</span> ₺</div>
+                    <a class="basketConfirm" asp-controller="OrderProducts" asp-action="Approve" asp-route-id="@order.Id">Sepeti Onayla</a>
+
+        </div>
+                }
+            }
+    </div>
+    <script>
+        function UpDateBasket(data) 
+        {
+            var basketCount = 0;
+            
+            if(data==null)
+            {
+                $("#_order").remove();
+                $("#_wrapper").html("<h1>Sepet Boş</h1>");
+                $("#basketCount").html(0);
+            }
+            else
+            {
+                for (var i = 0; i < data.orderProducts.length; i++) 
+                {
+                    basketCount = basketCount + data.orderProducts[i].quantity;
+                    if (data.orderProducts[i].productId == data.clicked) {
+                        $("#" + data.orderProducts[i].productId + "-quantity").html(data.orderProducts[i].quantity);
+                        $("#" + data.orderProducts[i].productId+"-subtotal").html(data.orderProducts[i].total);
+                        console.log("clicked ıd :" + data.clicked + "product ıd : " + data.orderProducts[i].productId + "\ndata-quantity : " + data.orderProducts[i].quantity + "\ndata-total" + data.orderProducts[i].total)
+                        if ($("#" + data.orderProducts[i].total)){ }
+                    }
+                }
+            $("#total").html(data.totalPrice);
+            $("#basketCount").html(basketCount);
+            }
+        }
+        function AddToBasket(productId, quantity, isDelete=false) 
+        {
+            $.post("@Url.Action("UpDateBasket","OrderProducts")/" + productId + "?quantity=" + quantity+"&delete="+isDelete , UpDateBasket, "json");
+        }
+
+        function DeleteFromBasket(productId)
+        {
+            var miktar = $("#" + productId + "-quantity").html();
+            AddToBasket(productId,miktar,true);
+        }
+       </script>
+</div>

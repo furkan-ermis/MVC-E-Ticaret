@@ -1,0 +1,156 @@
+﻿@model OzSapkaTShirt.Models.Product
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>Product</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <input asp-for="Description" class="form-control" />
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Gender" class="control-label"></label>
+                <select asp-for="Gender" class="form-control">
+                    <option>Unisex</option>
+                    <option>Erkek</option>
+                    <option>Kadın</option>
+                </select>
+                <span asp-validation-for="Gender" class="text-danger"></span>
+            </div>
+            <div class="form-group" id="category">
+                <label asp-for="CategoryId" class="control-label"></label>
+                <select asp-for="CategoryId" id="categoryDropDown" class="form-control" asp-items="@ViewBag.Categories"></select>
+                <span asp-validation-for="CategoryId" class="text-danger"></span>
+            </div>
+
+            @*-----------Hat-Tshirt-Checkbox--------*@
+            <div class="form-group" id="HatCheckBox">
+                <label class="control-label">Şapka Tipi</label>
+                <select asp-for="PropertyName" class="form-control" >
+                    <option value="Fötr">Fötr</option>
+                    <option value="Hasır">Hasır</option>
+                    <option value="Flat">Flat</option>
+                    <option value="Bere">Bere</option>
+                    <option value="Ressam">Ressam</option>
+                    <option value="Cap">Cap</option>
+                </select>
+                <span asp-validation-for="PropertyName" class="text-danger"></span>
+            </div>
+            <div class="form-group" style="display:none;" id="TShirt">
+                <label class="control-label">Model</label>
+                <select asp-for="PropertyName" class="form-control">
+                    <option value="Uzun Kollu">Uzun Kollu</option>
+                    <option value="Kısa Kollu">Kısa Kollu</option>
+                </select>
+                <span asp-validation-for="PropertyName" class="text-danger"></span>
+            </div>
+            @*--------------------------------------*@
+            <div id="TShirtCheckBox" style="display:none;">
+                <div class="form-group" >
+                    <label asp-for="SmallSize" class="control-label"></label>
+                    <input asp-for="SmallSize" class="form-control-checkbox" />
+                    <span asp-validation-for="SmallSize" class="text-danger"></span>
+                </div>
+                <div class="form-group" >
+                    <label asp-for="MediumSize" class="control-label"></label>
+                    <input asp-for="MediumSize" class="form-control-checkbox" />
+                    <span asp-validation-for="MediumSize" class="text-danger"></span>
+                </div>
+                <div class="form-group" >
+                    <label asp-for="LargeSize" class="control-label"></label>
+                    <input asp-for="LargeSize" class="form-control-checkbox" />
+                    <span asp-validation-for="LargeSize" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="XLargeSize" class="control-label"></label>
+                    <input asp-for="XLargeSize" class="form-control-checkbox" />
+                    <span asp-validation-for="XLargeSize" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-group" id="HatContainer">
+                <label asp-for="HatSize" class="control-label"></label>
+                <input asp-for="HatSize" class="form-control-checkbox" />
+                <span asp-validation-for="HatSize" class="text-danger"></span>
+            </div>
+            
+            <script>
+                // ----------------------------------------------------------------------
+                const categoryDropDown = document.getElementById("categoryDropDown");
+                const HatCheckBox = document.getElementById("HatCheckBox");
+                const TShirtCheckBox = document.getElementById("TShirtCheckBox");
+                const TShirtContainer = document.getElementById("TShirtContainer");
+                const HatContainer = document.getElementById("HatContainer");
+
+
+
+
+                categoryDropDown.addEventListener("change", () => {
+                    if (categoryDropDown.selectedIndex === 1) {
+                        HatCheckBox.style.display = "none";
+                        TShirtCheckBox.style.display = "block";
+
+
+                        TShirtContainer.style.display = "block";
+                        HatContainer.style.display = "none";
+
+                    } else if (categoryDropDown.selectedIndex === 0) {
+                        TShirtCheckBox.style.display = "none";
+                        HatCheckBox.style.display = "block";
+
+
+                        TShirtContainer.style.display = "none";
+                        HatContainer.style.display = "block";
+                    }
+                });
+            </script>
+
+            <div class="form-group">
+                <label asp-for="Price" class="control-label"></label>
+                <input asp-for="Price" class="form-control" />
+                <span asp-validation-for="Price" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Fabric" class="control-label"></label>
+                <input asp-for="Fabric" class="form-control" />
+                <span asp-validation-for="Fabric" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Color" class="control-label"></label>
+                <input asp-for="Color" class="form-control" />
+                <span asp-validation-for="Color" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Image" class="control-label"></label>
+                <input asp-for="Image" class="form-control" accept="image/*" />
+                <span asp-validation-for="Image" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+ 
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
