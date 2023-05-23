@@ -20,17 +20,25 @@ namespace OzSapkaTShirt.Controllers
 
         public IActionResult Index()
         {
-            
+
+            string userIdentity = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            Order order = _context.Orders
+                .Where(o => o.UserId == userIdentity && o.Status == 0)
+                .Include(o => o.OrderProducts).FirstOrDefault();
+            if (order != null)
+            {
+                HttpContext.Session.SetInt32("BasketCount", order.OrderProducts.Sum(op => op.Quantity));
+            }
+            else
+            {
+                HttpContext.Session.SetInt32("BasketCount", 0);
+            }
             return View(_context.Products.ToList());
         }
         public IActionResult ProductsByCategory(long id)
         {
             return View(_context.Products.Where(p => p.CategoryId == id).ToList());
         }
-        
-        //public  IActionResult Gender(long id)
-        //{
-        //        return View(_context.Products.Where(p=>p.Gender==id).ToList());
-        //}
+
     }
 }

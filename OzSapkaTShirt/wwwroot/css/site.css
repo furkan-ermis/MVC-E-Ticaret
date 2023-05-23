@@ -1,21 +1,22 @@
-
 :root {
     --bg-color: #FFFFFF;
     --clr-primary: #2C2727;
     --clr-secondary: #606470;
     --clr-neutral: #2C2891;
-    --ff-primary: 'Century Gothic'
+    --ff-primary: 'Century Gothic';
 }
 body {
     background-color: var(--bg-color);
     margin: 0;
     padding: 0;
 }
-
-a {
+a{
     text-decoration: none;
 }
-.card_{display:inline-flex;margin:1em;}
+.card_{
+    display:inline-flex;
+    margin:1em;
+}
 * {
     margin: 0;
     font-family: var(--ff-primary);
@@ -24,29 +25,37 @@ a {
     text-decoration: none;
     list-style: none;
 }
-/*------LAYOUT-------------------------------------------*/
+/*------LAYOUT------------------------------------------- */
 .bgImage{
     width:500px;
     height:500px;
     z-index:-10;
     position:fixed;
+    top:240px;
     bottom:3em;
     right:12em;
 }
-
 .wrapper {
     width: 80%;
+    height:100vh;
     margin: 0 auto;
-    height: 100vh;
 }
-
-
+.fixedWrap {
+    position: fixed;
+    z-index:100;
+    top: 0;
+    width:100%;
+    left:0;
+    background-color: white;
+    position: fixed;
+    padding-block:1.4em;
+    padding-inline:20px;
+}
 ._navbar {
     display: flex;
     width: 100%;
     justify-content: space-between;
     position: relative;
-    padding:12px 30px;
 }
 
 .logo {
@@ -119,23 +128,118 @@ a.page {
     .signUp:hover, .logIn:hover {
         opacity: .9;
     }
+.basketIcon{
+    position:relative;
+}
+.basketAmount {
+    display:inline-block;
+    position: relative;
+    right:20px;
+    background-color:red;
+    width:16px;
+    height:16px;
+    font-weight:bold;
+    text-align:center;
+    color:white;
+    border-radius:50%;
+}
+.break{
+    margin-top:110px;
+}
 /*-------------------------------------------------*/
 /*------HOME-INDEX-------------------------------------------*/
-.hats,.tshirts {
-    width: 100%;
-    object-fit: cover;
-    margin-block:3.7em 1em;
+.containerMain {
+    position:relative;
+    overflow: hidden;
+    width:100%;
+    height:90vh;
+    display: inline-flex;
 }
-    .hats > a > img + span {
-        font-size:4.6em;
-        color:white;
-        font-family:Albegos;
-        font-weight:bolder;
-        position: absolute;
-        bottom:1.1em;
-        left:3.8em;
+
+.left,
+.right {
+    position:relative;
+    top:-120px;
+    overflow: hidden;
+    margin-inline:1em;
+    width: 50%;
+    height:80em;
+    transition:all 600ms;
+
+}
+
+.left {
+    left:0;
+    transform: rotate(10deg) translateX(0em);
+}
+    .left img, .right img {
+    width:100%;
+    min-height:80em;
+    border-radius:8%   ;
+}
+    .left:hover {
+        width:55%;
         z-index:10;
     }
+.right:hover {
+    width: 55%;
+        ;z-index:10;
+}
+.right {
+    transform: rotate(-10deg) translateX(0em);
+}
+
+@media only screen and (max-width: 1000px) {
+    .left {
+        left: 0;
+        height:60em;
+        transform: none;
+    }
+
+    .right {
+        height: 60em;
+        
+        
+        transform: none;
+    }
+        .right img {
+            object-fit: cover;
+        }.left img {
+            object-fit:  cover ;
+        }
+}@media only screen and (max-width: 800px) {
+    .left {
+        left: 0;
+        height: 50em;
+        top: 10em;
+        transform: none;
+    }
+
+    .right {
+        position:relative;
+        top:20em;
+        right:12em;
+        height: 50em;
+        transform: none;
+    }
+        
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 .cards {
     display: flex;
     justify-content:center;

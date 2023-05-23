@@ -3,6 +3,8 @@ using Microsoft.Extensions.DependencyInjection;
 using OzSapkaTShirt.Data;
 using Microsoft.AspNetCore.Identity;
 using OzSapkaTShirt.Models;
+using OzSapkaTShirt.Migrations;
+
 namespace OzSapkaTShirt.Data
 {
 
@@ -12,10 +14,11 @@ namespace OzSapkaTShirt.Data
         public EnsureCreated(ApplicationContext context)
         {
             _context = context;
-            createGender();                                                                     
+            createGender();
             createCities();
             createCategory();
         }
+
         public void createGender()
         {
             if (!_context.Genders.Any())
@@ -67,7 +70,7 @@ namespace OzSapkaTShirt.Data
                 _context.SaveChanges();
             }
         }
-            
-            
+
+
     }
 }

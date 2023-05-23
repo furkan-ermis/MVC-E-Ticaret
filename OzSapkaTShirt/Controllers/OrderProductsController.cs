@@ -67,7 +67,7 @@ namespace OzSapkaTShirt.Controllers
         {
             if (ModelState.IsValid)
             {
-               
+
                 _context.Add(orderProduct);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -100,7 +100,7 @@ namespace OzSapkaTShirt.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(long id, [Bind("OrderId,ProductId,Quantity,Price,Total")] OrderProduct orderProduct)
+        public async Task<IActionResult> Edit(long id, OrderProduct orderProduct)
         {
             if (id != orderProduct.OrderId)
             {
@@ -155,7 +155,7 @@ namespace OzSapkaTShirt.Controllers
         // OrderProducts/UpdateBasket/5&1/&false
         public async Task<ActionResult> Approve(long? id)
         {
-            if (id==null ||_context.Orders==null)
+            if (id == null || _context.Orders == null)
             {
                 return NotFound();
             }
@@ -170,26 +170,26 @@ namespace OzSapkaTShirt.Controllers
             _context.SaveChanges();
             return View(order);
         }
-      
-        public Order UpDateBasket(long id,int quantity,bool delete)
+
+        public Order UpDateBasket(long id, int quantity, bool delete)
         {
             Order? order;
             OrderProduct? orderProduct;
             string userIdentity = User.FindFirstValue(ClaimTypes.NameIdentifier);
             Product product = _context.Products.Find(id);
-        
+
 
             order = _context.Orders
                             .Where(o => o.UserId == userIdentity && o.Status == 0)
                             .Include(o => o.OrderProducts).FirstOrDefault();
-            if (order==null)
+            if (order == null)
             {
                 order = new Order();
                 order.UserId = userIdentity;
                 order.OrderDate = DateTime.Today;
                 order.TotalPrice = 0;
                 order.Status = 0;
-                order.OrderProducts = new List< OrderProduct > ();
+                order.OrderProducts = new List<OrderProduct>();
                 _context.Add(order);
                 _context.SaveChanges();
             }
@@ -198,24 +198,25 @@ namespace OzSapkaTShirt.Controllers
             orderProduct = order.OrderProducts.Find(op => op.ProductId == id);
             if (orderProduct == null)
             {
-                orderProduct =new OrderProduct();
+                orderProduct = new OrderProduct();
                 orderProduct.OrderId = order.Id;
                 orderProduct.ProductId = id;
-                orderProduct.Quantity = 1;
+                orderProduct.Quantity = quantity;
                 orderProduct.Price = product.Price;
-                orderProduct.Total =  product.Price;
+                orderProduct.Total = product.Price;
 
                 order.OrderProducts.Add(orderProduct);
 
 
-        }
+            }
             else
             {
                 orderProduct.Quantity += quantity;
-                if (delete)
+                orderProduct.Total += quantity * product.Price;
+
+                if (orderProduct.Quantity == 0)
                 {
-                    orderProduct.Quantity = 0;
-                    _context.Remove(orderProduct);
+                    order.OrderProducts.Remove(orderProduct);
                     if (order.OrderProducts.Sum(op => op.Quantity) == 0)
                     {
                         _context.Remove(order);
@@ -223,19 +224,27 @@ namespace OzSapkaTShirt.Controllers
                         _context.SaveChanges();
                         return null;
                     }
-                _context.SaveChanges();
-                        return null;
                 }
-
-                else
+                if (delete)
                 {
-                orderProduct.Total += quantity * product.Price;
+                    quantity = -quantity;
+                    order.OrderProducts.Remove(orderProduct);
+                    if (order.OrderProducts.Sum(op => op.Quantity) == 0)
+                    {
+                        _context.Remove(order);
+                        HttpContext.Session.SetInt32("BasketCount", order.OrderProducts.Sum(op => op.Quantity));
+                        _context.SaveChanges();
+                        return null;
+                    }
                 }
-            }
-                order.Clicked = id;
-                order.TotalPrice += product.Price*quantity;
-                _context.Update(order);
                 _context.SaveChanges();
+
+
+            }
+            order.Clicked = id;
+            order.TotalPrice += product.Price * quantity;
+            _context.Update(order);
+            _context.SaveChanges();
             HttpContext.Session.SetInt32("BasketCount", order.OrderProducts.Sum(op => op.Quantity));
             return order;
             // (byte)order.OrderProducts.Sum(op=>op.Quantity)

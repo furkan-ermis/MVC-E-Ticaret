@@ -7,6 +7,7 @@ using OzSapkaTShirt.Models;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
+using EasyCashIdentityProject.EntityLayer.Concrete;
 
 namespace OzSapkaTShirt.Controllers
 {
@@ -73,7 +74,7 @@ namespace OzSapkaTShirt.Controllers
                 if (identityResult == IdentityResult.Success)
                 {
                     //Add customer role to user
-            
+
                     return RedirectToAction("Index", "Home");
                 }
                 foreach (IdentityError error in identityResult.Errors)
@@ -194,7 +195,7 @@ namespace OzSapkaTShirt.Controllers
             {
                 await _userManager.DeleteAsync(user);
             }
-            return RedirectToAction("Index","Home");
+            return RedirectToAction("Index", "Home");
         }
 
         private bool UserExists(string id)
@@ -238,7 +239,10 @@ namespace OzSapkaTShirt.Controllers
                             HttpContext.Session.SetInt32("BasketCount", order.OrderProducts.Sum(op => op.Quantity));
                         }
 
-
+                        else
+                        {
+                            HttpContext.Session.SetInt32("BasketCount", 0);
+                        }
                         if (user.RememberMe)
                         {
                             if (!(Request.Cookies.ContainsKey("userName") & Request.Cookies.ContainsKey("passWord")))
@@ -251,7 +255,7 @@ namespace OzSapkaTShirt.Controllers
                         }
 
 
-                        
+
 
                         return RedirectToAction("Index", "Home");
                     }
@@ -288,6 +292,60 @@ namespace OzSapkaTShirt.Controllers
             }
             return View();
         }
+        public IActionResult ForgetPassword()
+        {
+            return View();
+        }
+        [HttpPost]
+        public async Task<IActionResult> ForgetPassword(ForgetPasswordViewModel forgetPasswordViewModel)
+        {
+            ApplicationUser applicationUser;
+
+            string resetToken;
+
+            if (ModelState.IsValid)
+            {
+                applicationUser = await _userManager.FindByEmailAsync(forgetPasswordViewModel.eMail);
+                if (applicationUser != null)
+                {
+                    resetToken = await _userManager.GeneratePasswordResetTokenAsync(applicationUser);
+
+                    new SendMail(forgetPasswordViewModel.eMail, "jarvis.tony.34@gmail.com", "pqabajejwxfnsiau", "Admin-CapStone",
+                        forgetPasswordViewModel.eMail, "Şifre Yenileme", "Şifre Yenileme için Kod : " + resetToken);
+
+                    ViewData["eMail"] = forgetPasswordViewModel.eMail;
+                    return View("ResetPassword");
+                }
+                // böyle bir kullanıcı bulunamadı
+            }
+            // Geçerli bir mail giriniz
+
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ResetPassword(ResetPasswordViewModel resetPasswordViewModel)
+        {
+            ApplicationUser applicationUser;
+            IdentityResult identityResult;
+
+            if (ModelState.IsValid)
+            {
+                applicationUser = await _userManager.FindByEmailAsync(resetPasswordViewModel.eMail);
+                applicationUser.UserName = applicationUser.UserName.Trim();
+                identityResult = await _userManager.ResetPasswordAsync(applicationUser, resetPasswordViewModel.Code, resetPasswordViewModel.PassWord);
+                if (identityResult.Succeeded)
+                {
+                    RedirectToAction("Login");
+                }
+                // böyle hatalı kod girdiniz
+
+            }
+            // geçerli parola girmediniz
+
+            return View();
+        }
+
         public IActionResult Logout()
         {
             _signInManager.SignOutAsync().Wait();

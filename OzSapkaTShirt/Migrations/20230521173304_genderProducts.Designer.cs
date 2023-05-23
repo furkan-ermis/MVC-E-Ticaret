@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using OzSapkaTShirt.Data;
 
@@ -11,9 +12,10 @@ using OzSapkaTShirt.Data;
 namespace OzSapkaTShirt.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    partial class ApplicationContextModelSnapshot : ModelSnapshot
+    [Migration("20230521173304_genderProducts")]
+    partial class genderProducts
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -306,14 +308,14 @@ namespace OzSapkaTShirt.Migrations
 
             modelBuilder.Entity("OzSapkaTShirt.Models.GenderProduct", b =>
                 {
-                    b.Property<byte>("GenderId")
+                    b.Property<byte>("Id")
                         .HasColumnType("tinyint");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nchar(15)");
 
-                    b.HasKey("GenderId");
+                    b.HasKey("Id");
 
                     b.ToTable("GenderProducts");
                 });
@@ -405,6 +407,9 @@ namespace OzSapkaTShirt.Migrations
                     b.Property<byte>("GenderProduct")
                         .HasColumnType("tinyint");
 
+                    b.Property<byte>("GenderTypeId")
+                        .HasColumnType("tinyint");
+
                     b.Property<bool>("HatSize")
                         .HasColumnType("bit");
 
@@ -438,7 +443,7 @@ namespace OzSapkaTShirt.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.HasIndex("GenderProduct");
+                    b.HasIndex("GenderTypeId");
 
                     b.ToTable("Products");
                 });
@@ -573,15 +578,15 @@ namespace OzSapkaTShirt.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("OzSapkaTShirt.Models.GenderProduct", "GenderTypes")
+                    b.HasOne("OzSapkaTShirt.Models.GenderProduct", "GenderType")
                         .WithMany()
-                        .HasForeignKey("GenderProduct")
+                        .HasForeignKey("GenderTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Category");
 
-                    b.Navigation("GenderTypes");
+                    b.Navigation("GenderType");
                 });
 
             modelBuilder.Entity("OzSapkaTShirt.Models.Property", b =>

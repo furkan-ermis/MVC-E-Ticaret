@@ -16,7 +16,7 @@ using Microsoft.AspNetCore.Mvc.ModelBinding;
 namespace OzSapkaTShirt.Areas.Admin.Controllers
 {
     [Area("Admin")]
-   // [Authorize(Roles = "Administrator")]
+    // [Authorize(Roles = "Administrator")]
     public class ProductsController : Controller
     {
         private readonly ApplicationContext _context;
@@ -29,9 +29,9 @@ namespace OzSapkaTShirt.Areas.Admin.Controllers
         // GET: Admin/Products
         public async Task<IActionResult> Index()
         {
-              return _context.Products != null ? 
-                          View(await _context.Products.ToListAsync()) :
-                          Problem("Entity set 'ApplicationContext.Products'  is null.");
+            return _context.Products != null ?
+                        View(await _context.Products.ToListAsync()) :
+                        Problem("Entity set 'ApplicationContext.Products'  is null.");
         }
 
         // GET: Admin/Products/Details/5
@@ -75,8 +75,6 @@ namespace OzSapkaTShirt.Areas.Admin.Controllers
 
                 categories = new SelectList(_context.Categories, "Id", "CategoryName");
                 ViewData["Categories"] = categories;
-                
-                
                 _context.Add(product);
                 _context.Add(property);
                 await _context.SaveChangesAsync();
@@ -217,14 +215,14 @@ namespace OzSapkaTShirt.Areas.Admin.Controllers
             {
                 _context.Products.Remove(product);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool ProductExists(long id)
         {
-          return (_context.Products?.Any(e => e.Id == id)).GetValueOrDefault();
+            return (_context.Products?.Any(e => e.Id == id)).GetValueOrDefault();
         }
         private Image ReSize(Image originalImage, int newWidth, int newHeight)
         {

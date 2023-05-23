@@ -14,42 +14,38 @@
     <link rel="stylesheet" href="~/OzSapkaTShirt.styles.css" asp-append-version="true" />
 </head>
 <body>
-    <img class="bgImage" src="~/images/headlg.png" />
     <div class="wrapper">
-        <header class="">
-            <nav class="_navbar">
+        <header class="fixedWrap">
+            <nav class="navbar">
                 <div class="logo">
                     <a class="_logo" asp-area="" asp-controller="Home" asp-action="Index">
                         <img class="_logo-img" src="~/images/logo2.png" />
                     </a>
                 </div>
                 <ul class="menu">
-                    
-                    <li class="menu_page">
-                        <a class="page" asp-area="" asp-controller="Home" asp-action="Male">Erkek</a>
-                    </li>
-                    <li class="menu_page">
-                        <a class="page" asp-area="" asp-controller="Home" asp-action="Female">Kadın</a>
-                    </li>
+                 
                 </ul>
-                <ul class="registerLogin">
-                        
+                <ul class="registerLogin user">
 
-                    
+
+
                     @if (User.FindFirstValue(ClaimTypes.NameIdentifier) != null)
                     {
-                        <li class="">
-                            <a asp-area="" asp-action="index" asp-controller="Orders"><img class="sepet" src="~/images/sepet.png" /></a>
-                            
-                            <span id="basketCount">@HttpContextAccessor.HttpContext.Session.GetInt32("BasketCount")</span>
+                        <li class="basketIcon">
+                            <a asp-area="" asp-action="index" asp-controller="Orders">
+                                <img class="sepet" src="~/images/sepet.png" />
+
+                                <span class="basketAmount" id="basketCount">@HttpContextAccessor.HttpContext.Session.GetInt32("BasketCount")</span>
+                            </a>
                         </li>
                         <li class="account">
-                            <a asp-area="" asp-action="Details" asp-controller="Users" >Account</a>
+                            <a asp-area="" asp-action="Details" asp-controller="Users">Account</a>
                         </li>
                         <li class="logOut">
                             <a class="page" asp-area="" asp-controller="Users" asp-action="Logout">Logout</a>
                         </li>
-                    } else
+                    }
+                    else
                     {
                         <li class="signUp">
                             <a class="page" asp-area="" asp-controller="Users" asp-action="Create">SignUp</a>
@@ -62,15 +58,14 @@
             </nav>
         </header>
     
+        <div class="break"></div>
     
-    
-        <main role="main" class="mt-5">
+        <main role="main" class="main">
             @RenderBody()
         </main>
 
-        <footer class="">
-        </footer>
     </div>
+    <img class="bgImage" src="~/images/headlg.png" />
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>

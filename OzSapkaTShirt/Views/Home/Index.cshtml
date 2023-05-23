@@ -4,66 +4,74 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="hats">
-    <a asp-area="" asp-action="ProductsByCategory" asp-controller="Home" asp-route-id="0"><img class="hats" src="~/images/hats.png" /><span>HATS & MORE</span></a>
-</div>
-<div class="tshirts">
-    <a asp-area="" asp-action="ProductsByCategory" asp-controller="Home" asp-route-id="1"><img class="tshirts" src="~/images/TShırt.png" /></a>
+
+     
+<div class="containerMain">
+    <a class="left" asp-area="" asp-action="ProductsByCategory" asp-controller="Home" asp-route-id="0">
+        <span style="position:relative;color:white;top:3em;z-index:1000;padding-left:1em;font-size:8em">Hats</span>
+        <img class="hats" src="~/images/hats3.png" />
+    </a>
+    <a class="right" asp-area="" asp-action="ProductsByCategory" asp-controller="Home" asp-route-id="1">
+        <span style="position:relative;color:white;top:3em;z-index:1000;padding-right:1em;font-size:8em;text-align:end;display:block">Tshirts</span>
+        <img class="tshirts" src="~/images/TShırt4.png" />
+    </a>
 </div>
 
 <h2>En Çok Ziyaret Edilenler</h2>
+<script>
+    function UpDateBasket(data) {
+
+        var basketCount = 0;
+        var i;
+        for (i = 0; i < data.orderProducts.length; i++) {
+            basketCount = basketCount + data.orderProducts[i].quantity;
+        }
+        $("#basketCount").html(basketCount);
+    }
+    function AddToBasket(productId) {
+        $.post("@Url.Action("UpDateBasket","OrderProducts")/" + productId + "?quantity=1&delete=false", UpDateBasket, "json");
+    }
+</script>
+
 
 <div id="myCarousel" class="carousel slide" data-bs-ride="carousel">
-    
+
     <div class="carousel-inner">
         @foreach (var item in Model.Select((value, index) => new { Value = value, Index = index }).GroupBy(x => x.Index / 5).ToList())
         {
             <div class="carousel-item @if (item.Key == 0) {
         <text>active</text>
  }">
-                <div class="row justify-content-center">
+                                    <div class="row justify-content-center">
                     @foreach (var product in item.Select(x => x.Value))
                     {
-                        <div class="col-md-2">
-                            <div class="card">
-                                <a asp-controller="Products" asp-action="Details" asp-route-id="@product.Id">
+                                                            <div class="col-md-2">
+                                                                <div class="card">
+                                                                    <a asp-controller="Products" asp-action="Details" asp-route-id="@product.Id">
                                     @if (product.DBImage != null)
                                     {
-                                        <img class="productImg" src="data:image/png;base64,@Convert.ToBase64String(product.DBImage)" />
+                                                                                            <img class="productImg" src="data:image/png;base64,@Convert.ToBase64String(product.DBImage)" />
                                     }
-                                    <div class="main_detail">
-                                        <div class="productName">@product.Name</div>
-                                        <div class="detail">
-                                            <div class="priceDetail">
-                                                <div class="productDesc">@product.Description</div>
-                                                <div class="price">@product.Price<span>₺</span></div>
-                                            </div>
-                                        </div>
+                                                                        <div class="main_detail">
+                                                                            <div class="productName">@product.Name</div>
+                                                                            <div class="detail">
+                                                                                <div class="priceDetail">
+                                                                                    <div class="productDesc">@product.Description</div>
+                                                                                    <div class="price">@product.Price<span>₺</span></div>
+                                                                                </div>
+                                                                            </div>
                                         @if (User.FindFirstValue(ClaimTypes.NameIdentifier) != null)
                                         {
 
-                                         <script>
-                                            function UpDateBasket(data) {
-                                                var basketCount = 0;
-                                                var i;
-                                                for (i = 0; i < data.orderProducts.length; i++) {
-                                                    basketCount = basketCount + data.orderProducts[i].quantity;
-                                                }
-                                                $("#basketCount").html(basketCount);
-                                            }
-                                            function AddToBasket(productId) {
-                                                $.post("@Url.Action("UpDateBasket","OrderProducts")/" + productId + "?quantity=1&delete=false",UpDateBasket,"json");
-                                            }
-                                        </script>
-                                            <button class="btn-sepet" onclick="AddToBasket(@product.Id.ToString()); return false;"><img class="sepet " src="~/images/sepet.png" /></button>
-                                        }
-                                    </div>
-                                </a>
-                            </div>
-                        </div>
+            <button class="btn-sepet" onclick="AddToBasket(@product.Id.ToString()); return false;"><img class="sepet " src="~/images/sepet.png" /></button>
+            }
+                                                                        </div>
+                                                                    </a>
+                                                                </div>
+                                                            </div>
                     }
-                </div>
-            </div>
+                                    </div>
+                                </div>
         }
     </div>
 

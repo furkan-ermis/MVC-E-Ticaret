@@ -78,26 +78,30 @@
                 for (var i = 0; i < data.orderProducts.length; i++) 
                 {
                     basketCount = basketCount + data.orderProducts[i].quantity;
-                    if (data.orderProducts[i].productId == data.clicked) {
+                   
+                    if (data.orderProducts[i].productId == data.clicked)  {
                         $("#" + data.orderProducts[i].productId + "-quantity").html(data.orderProducts[i].quantity);
                         $("#" + data.orderProducts[i].productId+"-subtotal").html(data.orderProducts[i].total);
-                        console.log("clicked ıd :" + data.clicked + "product ıd : " + data.orderProducts[i].productId + "\ndata-quantity : " + data.orderProducts[i].quantity + "\ndata-total" + data.orderProducts[i].total)
-                        if ($("#" + data.orderProducts[i].total)){ }
                     }
                 }
             $("#total").html(data.totalPrice);
             $("#basketCount").html(basketCount);
             }
         }
-        function AddToBasket(productId, quantity, isDelete=false) 
+        function AddToBasket(productId, quantity=1, isDelete=false) 
         {
+            if($("#"+productId+"-quantity").html()  ==1 && quantity==-1){
+                $("#" + productId).remove()
+            }
             $.post("@Url.Action("UpDateBasket","OrderProducts")/" + productId + "?quantity=" + quantity+"&delete="+isDelete , UpDateBasket, "json");
+
         }
 
         function DeleteFromBasket(productId)
         {
             var miktar = $("#" + productId + "-quantity").html();
             AddToBasket(productId,miktar,true);
+            $("#" + productId).remove();
         }
        </script>
 </div>

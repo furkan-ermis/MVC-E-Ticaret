@@ -37,13 +37,6 @@ namespace OzSapkaTShirt.Models
         [Required(ErrorMessage = "Bu alan zorunludur.")]
         [StringLength(20, MinimumLength = 3, ErrorMessage = "En fazla 20, en az 3 karakter")]
         public string Fabric { get; set; } = default!;
-
-
-        [DisplayName("Cinsiyet")]
-        public string? Gender { get; set; }
-
-       
-
         [Column(TypeName = "nchar(20)")]
         [DisplayName("Renk")]
         [Required(ErrorMessage = "Bu alan zorunludur.")]
@@ -69,7 +62,7 @@ namespace OzSapkaTShirt.Models
         [ForeignKey("CategoryId")]
         public Category? Category { get; set; }
         public string? PropertyName { get; set; }
-        
+
 
     }
 }

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using OzSapkaTShirt.Data;
 
@@ -11,9 +12,10 @@ using OzSapkaTShirt.Data;
 namespace OzSapkaTShirt.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    partial class ApplicationContextModelSnapshot : ModelSnapshot
+    [Migration("20230521173628_genderProductss")]
+    partial class genderProductss
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -405,6 +407,9 @@ namespace OzSapkaTShirt.Migrations
                     b.Property<byte>("GenderProduct")
                         .HasColumnType("tinyint");
 
+                    b.Property<byte>("GenderTypesGenderId")
+                        .HasColumnType("tinyint");
+
                     b.Property<bool>("HatSize")
                         .HasColumnType("bit");
 
@@ -438,7 +443,7 @@ namespace OzSapkaTShirt.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.HasIndex("GenderProduct");
+                    b.HasIndex("GenderTypesGenderId");
 
                     b.ToTable("Products");
                 });
@@ -575,7 +580,7 @@ namespace OzSapkaTShirt.Migrations
 
                     b.HasOne("OzSapkaTShirt.Models.GenderProduct", "GenderTypes")
                         .WithMany()
-                        .HasForeignKey("GenderProduct")
+                        .HasForeignKey("GenderTypesGenderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
