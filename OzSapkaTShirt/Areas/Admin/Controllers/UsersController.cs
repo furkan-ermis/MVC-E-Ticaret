@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace OzSapkaTShirt.Areas.Admin.Controllers
 {
@@ -14,13 +15,18 @@ namespace OzSapkaTShirt.Areas.Admin.Controllers
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly ApplicationContext _context;
 
-        public UsersController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager)
+
+
+        public UsersController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, ApplicationContext context)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _context = context;
+
         }
-      //  [Authorize(Roles = "Administrator")]
+        //  [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Index()
         {
             return _userManager.Users != null ?

@@ -1,37 +1,40 @@
-﻿@model OzSapkaTShirt.Models.Order
+﻿@model List<Order>
+<div class="wrapperOrderDetail">
+    <h1>Önceki Siparişlerim</h1>
+    @foreach (var item in Model)
+    {
+        <div class="orderDetail">
+            <div class="orderDetail_detail">
+                <div class="orderDetail_detail_orderDate">
+                    <h6 class="_title">Sipariş Tarihi</h6>
+                    <p class="_content">@item.OrderDate</p>
+                </div>
+                <div class="orderDetail_orderQuantity">
+                    <h6 class="_title">Sipariş Adeti</h6>
+                    <p class="_content">@item.OrderProducts.Sum(a=>a.Quantity)</p>
+                </div>
+                <div class="orderDetail_orderUser">
+                    <h6 class="_title">Alıcı</h6>
+                    <p class="_content">@item.User.Name</p>
+                </div>
+                <div class="orderDetail_orderPrice">
+                    <h6 class="_title">Sipariş Tutarı</h6>
+                    <p class="_content" style="font-weight:bold;">@item.TotalPrice <span>₺</span></p>
+                </div>
+            </div>
+            @foreach (var orderProduct in item.OrderProducts)
+            {
+                <div class="orderDetail_orderProducts">
+                    <div class="_title">@orderProduct.Product.Name<div class="_content">@orderProduct.Product.Description</div></div>
+                    <div>@orderProduct.Quantity</div>
+                    <div>@orderProduct.Product.Price <span>₺</span></div>
 
-@{
-    ViewData["Title"] = "Details";
-}
-
-<h1>Details</h1>
-
-<div>
-    <h4>Order</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.User)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.User.Id)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.OrderDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.OrderDate)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.TotalPrice)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.TotalPrice)
-        </dd>
-        
-    </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+                    @if (@orderProduct.Product.DBImage != null)
+                    { 
+                    <img style="width:40px;height:60px;overflow:hidden;margin-top:0;" class="DetailImg" src="data:image/png;base64,@Convert.ToBase64String(@orderProduct.Product.DBImage)" />
+                    }
+                </div>
+            }
+        </div>
+    }
 </div>

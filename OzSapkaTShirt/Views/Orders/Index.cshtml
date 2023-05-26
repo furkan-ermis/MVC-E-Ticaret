@@ -63,6 +63,15 @@
             }
     </div>
     <script>
+        function AddToBasket(productId, quantity = 1, isDelete = false) {
+            if ($("#" + productId + "-quantity").html() == 1 && quantity == -1) {
+                $("#" + productId).remove()
+            }
+            $.post("@Url.Action("UpDateBasket","OrderProducts")/" + productId + "?quantity=" + quantity + "&delete=" + isDelete, UpDateBasket, "json");
+
+        }
+
+
         function UpDateBasket(data) 
         {
             var basketCount = 0;
@@ -88,14 +97,7 @@
             $("#basketCount").html(basketCount);
             }
         }
-        function AddToBasket(productId, quantity=1, isDelete=false) 
-        {
-            if($("#"+productId+"-quantity").html()  ==1 && quantity==-1){
-                $("#" + productId).remove()
-            }
-            $.post("@Url.Action("UpDateBasket","OrderProducts")/" + productId + "?quantity=" + quantity+"&delete="+isDelete , UpDateBasket, "json");
-
-        }
+        
 
         function DeleteFromBasket(productId)
         {
