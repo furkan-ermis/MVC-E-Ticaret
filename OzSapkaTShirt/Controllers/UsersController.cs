@@ -245,18 +245,9 @@ namespace OzSapkaTShirt.Controllers
                         }
                         if (user.RememberMe)
                         {
-                            if (!(Request.Cookies.ContainsKey("userName") & Request.Cookies.ContainsKey("passWord")))
-                            {
-
-
-                                Response.Cookies.Append("userName", user.UserName);
-                                Response.Cookies.Append("passWord", user.PassWord);
-                            }
+                            Response.Cookies.Append("userName", user.UserName);
+                            Response.Cookies.Append("passWord", user.PassWord);
                         }
-
-
-
-
                         return RedirectToAction("Index", "Home");
                     }
                 }
@@ -316,9 +307,9 @@ namespace OzSapkaTShirt.Controllers
                     ViewData["eMail"] = forgetPasswordViewModel.eMail;
                     return View("ResetPassword");
                 }
-                // böyle bir kullanıcı bulunamadı
+                ModelState.AddModelError("eMail", "Kullanıcı Bulunamadı");
             }
-            // Geçerli bir mail giriniz
+            ModelState.AddModelError("eMail", "Geçersiz Bir Mail Adresi Girildi");
 
             return View();
         }
@@ -338,10 +329,10 @@ namespace OzSapkaTShirt.Controllers
                 {
                     RedirectToAction("Login");
                 }
-                // böyle hatalı kod girdiniz
+                ModelState.AddModelError("Code", "Doğru Kod Girdiğinizden Emin olun");
 
             }
-            // geçerli parola girmediniz
+            ModelState.AddModelError("PassWord", "Geçersiz Bir Parola Girildi");
 
             return View();
         }

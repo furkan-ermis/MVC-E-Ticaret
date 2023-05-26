@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -24,27 +25,16 @@ namespace OzSapkaTShirt.Controllers
         // GET: Orders
         public async Task<IActionResult> Index()
         {
-            var applicationContext = _context.Orders.Include(o => o.User).Include(op=>op.OrderProducts).ThenInclude(p=>p.Product).ThenInclude(c=>c.Category);
+            var applicationContext = _context.Orders.Include(o => o.User).Include(op => op.OrderProducts).ThenInclude(p => p.Product).ThenInclude(c => c.Category);
             return View(await applicationContext.ToListAsync());
         }
 
         // GET: Orders/Details/5
-        public async Task<IActionResult> Details(long? id)
+        public async Task<IActionResult> Details()
         {
-            if (id == null || _context.Orders == null)
-            {
-                return NotFound();
-            }
-
-            var order = await _context.Orders
-                .Include(o => o.User)
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (order == null)
-            {
-                return NotFound();
-            }
-
-            return View(order);
+            string userIdentity = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var applicationContext = _context.Orders.Where(e => e.UserId == userIdentity && e.Status==1).Include(o => o.User).Include(op => op.OrderProducts).ThenInclude(p => p.Product).ThenInclude(c => c.Category);
+            return View(await applicationContext.ToListAsync());
         }
 
         // GET: Orders/Create
@@ -157,14 +147,14 @@ namespace OzSapkaTShirt.Controllers
             {
                 _context.Orders.Remove(order);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool OrderExists(long id)
         {
-          return (_context.Orders?.Any(e => e.Id == id)).GetValueOrDefault();
+            return (_context.Orders?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }
