@@ -1,0 +1,43 @@
+﻿@using System.Security.Claims;
+@model List<Product>
+<br />
+<br />
+@foreach (var product in Model)
+{
+    <div class="card card_">
+        <a asp-controller="Products" asp-action="Details" asp-route-id="@product.Id">
+            @if (product.DBImage != null)
+            {
+                <img class="productImg" src="data:image/png;base64,@Convert.ToBase64String(product.DBImage)" />
+            }
+            <div class="main_detail">
+                <div class="productName">@product.Name</div>
+                <div class="detail">
+                    <div class="priceDetail">
+                        <div class="productDesc">@product.Description</div>
+                        <div class="price">@product.Price<span>₺</span></div>
+                    </div>
+                </div>
+                @if (User.FindFirstValue(ClaimTypes.NameIdentifier) != null)
+                {
+
+                    <script>
+                        function UpDateBasket(data) {
+                            var basketCount = 0;
+                            var i;
+
+                            for (i = 0; i < data.orderProducts.length; i++) {
+                                basketCount = basketCount + data.orderProducts[i].quantity;
+                            }
+                            $("#basketCount").html(basketCount);
+                        }
+                        function AddToBasket(productId) {
+                            $.post("@Url.Action("UpDateBasket","OrderProducts")/" + productId + "?quantity=1&addReMove=true", UpDateBasket, "json");
+                        }
+                    </script>
+                    <button class="btn-sepet" onclick="AddToBasket(@product.Id.ToString()); return false;"><img class="sepet " src="~/images/sepet.png" /></button>
+                }
+            </div>
+        </a>
+    </div>
+}

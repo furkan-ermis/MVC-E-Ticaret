@@ -6,17 +6,17 @@
 
 
      
-<div class="containerMain">
+<div style="position:relative;" class="containerMain">
     <a class="left" asp-area="" asp-action="ProductsByCategory" asp-controller="Home" asp-route-id="0">
-        <span style="position:relative;color:white;top:3em;z-index:1000;padding-left:1em;font-size:8em">Hats</span>
+        <span style="position:absolute;color:white;font-weight:bolder;font-size:5em;top:1em;left:1em;">Hats</span>
         <img class="hats" src="~/images/hats3.png" />
     </a>
-    <a class="right" asp-area="" asp-action="ProductsByCategory" asp-controller="Home" asp-route-id="1">
-        <span style="position:relative;color:white;top:3em;z-index:1000;padding-right:1em;font-size:8em;text-align:end;display:block">Tshirts</span>
+    <a class="right"  asp-area="" asp-action="ProductsByCategory" asp-controller="Home" asp-route-id="1">
+        <div style="position:absolute;color:white;font-weight:bolder;font-size:5em;top:1em;right:1em;">Tshirts</div>
         <img class="tshirts" src="~/images/TShırt4.png" />
     </a>
 </div>
-
+<hr />
 <h2>En Çok Ziyaret Edilenler</h2>
 <script>
     function UpDateBasket(data) {

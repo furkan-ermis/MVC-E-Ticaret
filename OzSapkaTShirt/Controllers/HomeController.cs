@@ -37,7 +37,17 @@ namespace OzSapkaTShirt.Controllers
         }
         public IActionResult ProductsByCategory(long id)
         {
-            return View(_context.Products.Where(p => p.CategoryId == id).ToList());
+            ViewBag.id = id;
+            return View();
+        }
+        public PartialViewResult PartialProduct(long id, string text)
+        {
+            var res = _context.Products.Where(p => p.CategoryId == id).ToList();
+            if (text != null)
+            {
+                res = res.Where(p => p.Name.ToLower().Contains(text.ToLower())).ToList();
+            }
+            return PartialView("SearchProductPartialView", res);
         }
 
     }
