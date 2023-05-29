@@ -1,33 +1,4 @@
-﻿@model List<Order>
-<div class="wrapperOrderDetail">
-    <h1>Önceki Siparişlerim</h1>
-    @foreach (var item in Model)
-    {
-        <div class="orderDetail">
-            <div class="orderDetail_detail">
-                <div class="orderDetail_detail_orderDate">
-                    <h6 class="_title">Sipariş Tarihi</h6>
-                    <p class="_content">@item.OrderDate</p>
-                </div>
-                <div class="orderDetail_orderQuantity">
-                    <h6 class="_title">Sipariş Adeti</h6>
-                    <p class="_content">@item.OrderProducts.Sum(a=>a.Quantity)</p>
-                </div>
-                <div class="orderDetail_orderUser">
-                    <h6 class="_title">Alıcı</h6>
-                    <p class="_content">@item.User.Name</p>
-                </div>
-                <div class="orderDetail_orderPrice">
-                    <h6 class="_title">Sipariş Tutarı</h6>
-                    <p class="_content" style="font-weight:bold;">@item.TotalPrice <span>₺</span></p>
-                </div>
-            </div>
-            @foreach (var orderProduct in item.OrderProducts)
-            {
-                <div class="orderDetail_orderProducts">
-                    <div class="_title">@orderProduct.Product.Name<div class="_content">@orderProduct.Product.Description</div></div>
-                    <div>@orderProduct.Quantity</div>
-                    <div>@orderProduct.Product.Price <span>₺</span></div>
+﻿@model OzSapkaTShirt.Models.Order
 
                     @if (@orderProduct.Product.DBImage != null)
                     { 
