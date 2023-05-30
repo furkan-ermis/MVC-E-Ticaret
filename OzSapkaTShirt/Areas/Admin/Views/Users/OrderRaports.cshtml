@@ -1,0 +1,54 @@
+﻿@model OrderRaportsViewModel
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="~/js/site.js" asp-append-version="true"></script>
+<h1>Kullanıcı Siparişleri</h1>
+<br />
+<br />
+<div id="content" style="width:100%;margin:0 auto;text-align:center;"></div>
+
+<div class="orderContainer">
+    <div class="dates">
+        <div>
+            <label asp-for="start" class="control-label"></label><br />
+            <input asp-for="start" class="startDate" type="date"  />
+            <span asp-validation-for="start" class="text-danger"></span>
+
+        </div>
+        <div>
+            <label asp-for="end" class="control-label"></label><br />
+            <input asp-for="end" class="endDate" type="date" />
+            <span asp-validation-for="end" class="text-danger"></span>
+
+        </div>
+    </div>
+    <div>
+        <div>
+            <label asp-for="UserId" class="control-label"></label>
+            <select asp-for="UserId" id="user" class="form-control" asp-items="@ViewBag.Users"></select>
+            <span asp-validation-for="UserId"  class="text-danger"></span>
+
+        </div>
+    </div>
+    <div>
+        <div>
+        <label asp-for="ProductId"  class="control-label"></label>
+        <select asp-for="ProductId" id="product" class="form-control" asp-items="@ViewBag.Products"></select>
+        <span asp-validation-for="ProductId" class="text-danger"></span>
+        </div>
+    </div>
+    <div>
+        <input type="button" onclick="GetProducts()" value="Ara"/>
+    </div>
+</div>
+<script>
+    
+    function GetProducts(){
+        var user = $("#user").val();
+        var product = $("#product").val();
+        var start = $("#start").val();
+        var end = $("#end").val();
+        console.log("user : " + user + "\nproduct : " + product);
+        $("#content").load("@Url.Action("RaportsUserPartialView","Users")/" + product + "?UserID=" + user + "&start=" + start + "&end=" + end);
+    }
+
+</script>

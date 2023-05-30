@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.CodeAnalysis;
 
 namespace OzSapkaTShirt.Areas.Admin.Controllers
 {
@@ -88,6 +89,32 @@ namespace OzSapkaTShirt.Areas.Admin.Controllers
                 return Redirect("/admin/users/index");
             }
             return View();
+        }
+        public IActionResult OrderRaports()
+        {
+            SelectList users = new SelectList(_userManager.Users, "Id", "Name");
+            ViewData["Users"] = users;
+            SelectList products = new SelectList(_context.Products, "Id", "Name");
+            ViewData["Products"] = products;
+            return View();
+        }
+        public PartialViewResult RaportsUserPartialView(long id, string UserID, DateTime start, DateTime end)
+        {
+            SelectList users, products;
+            users = new SelectList(_userManager.Users, "Id", "Name");
+            ViewData["Users"] = users;
+            products = new SelectList(_context.Products, "Id", "Name");
+            ViewData["Products"] = products;
+            List<Order> data = _context.Orders.Include(u => u.User).Include(op => op.OrderProducts).ThenInclude(p => p.Product).ToList();
+            if (UserID != null)
+            {
+                data = data.Where(u => u.UserId == UserID).ToList();
+            }
+            //if (id != null)
+            //{
+            //    data = data.Where(u => u.OrderProducts.);
+            //}
+            return PartialView("RaportsUserPartialView", data);
         }
     }
 }
