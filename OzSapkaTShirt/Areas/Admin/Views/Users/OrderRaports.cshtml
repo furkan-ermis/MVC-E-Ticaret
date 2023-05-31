@@ -7,22 +7,22 @@
 <div id="content" style="width:100%;margin:0 auto;text-align:center;"></div>
 
 <div class="orderContainer">
-    <div class="dates">
-        <div>
+
+        <div class="group">
             <label asp-for="start" class="control-label"></label><br />
             <input asp-for="start" class="startDate" type="date"  />
             <span asp-validation-for="start" class="text-danger"></span>
 
         </div>
-        <div>
+    <div class="group">
             <label asp-for="end" class="control-label"></label><br />
             <input asp-for="end" class="endDate" type="date" />
             <span asp-validation-for="end" class="text-danger"></span>
 
         </div>
-    </div>
+
     <div>
-        <div>
+        <div class="group">
             <label asp-for="UserId" class="control-label"></label>
             <select asp-for="UserId" id="user" class="form-control" asp-items="@ViewBag.Users"></select>
             <span asp-validation-for="UserId"  class="text-danger"></span>
@@ -30,14 +30,14 @@
         </div>
     </div>
     <div>
-        <div>
+        <div class="group">
         <label asp-for="ProductId"  class="control-label"></label>
         <select asp-for="ProductId" id="product" class="form-control" asp-items="@ViewBag.Products"></select>
         <span asp-validation-for="ProductId" class="text-danger"></span>
         </div>
     </div>
     <div>
-        <input type="button" onclick="GetProducts()" value="Ara"/>
+        <input class="search_btn" type="button" onclick="GetProducts()" value="Ara" />
     </div>
 </div>
 <script>
