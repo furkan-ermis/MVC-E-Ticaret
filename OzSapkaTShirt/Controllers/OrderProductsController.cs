@@ -22,137 +22,6 @@ namespace OzSapkaTShirt.Controllers
         {
             _context = context;
         }
-
-        // GET: OrderProducts
-        public async Task<IActionResult> Index()
-        {
-            var applicationContext = _context.OrderProducts.Include(o => o.Order).Include(o => o.Product);
-            return View(await applicationContext.ToListAsync());
-        }
-
-        // GET: OrderProducts/Details/5
-        public async Task<IActionResult> Details(long? id)
-        {
-            if (id == null || _context.OrderProducts == null)
-            {
-                return NotFound();
-            }
-
-            var orderProduct = await _context.OrderProducts
-                .Include(o => o.Order)
-                .Include(o => o.Product)
-                .FirstOrDefaultAsync(m => m.OrderId == id);
-            if (orderProduct == null)
-            {
-                return NotFound();
-            }
-
-            return View(orderProduct);
-        }
-
-        // GET: OrderProducts/Create
-        public IActionResult Create()
-        {
-            ViewData["OrderId"] = new SelectList(_context.Orders, "Id", "Id");
-            ViewData["ProductId"] = new SelectList(_context.Products, "Id", "Color");
-            return View();
-        }
-
-        // POST: OrderProducts/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(OrderProduct orderProduct)
-        {
-            if (ModelState.IsValid)
-            {
-
-                _context.Add(orderProduct);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["OrderId"] = new SelectList(_context.Orders, "Id", "Id", orderProduct.OrderId);
-            ViewData["ProductId"] = new SelectList(_context.Products, "Id", "Color", orderProduct.ProductId);
-            return View(orderProduct);
-        }
-
-        // GET: OrderProducts/Edit/5
-        public async Task<IActionResult> Edit(long? id)
-        {
-            if (id == null || _context.OrderProducts == null)
-            {
-                return NotFound();
-            }
-
-            var orderProduct = await _context.OrderProducts.FindAsync(id);
-            if (orderProduct == null)
-            {
-                return NotFound();
-            }
-            ViewData["OrderId"] = new SelectList(_context.Orders, "Id", "Id", orderProduct.OrderId);
-            ViewData["ProductId"] = new SelectList(_context.Products, "Id", "Color", orderProduct.ProductId);
-            return View(orderProduct);
-        }
-
-        // POST: OrderProducts/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(long id, OrderProduct orderProduct)
-        {
-            if (id != orderProduct.OrderId)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(orderProduct);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!OrderProductExists(orderProduct.OrderId))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["OrderId"] = new SelectList(_context.Orders, "Id", "Id", orderProduct.OrderId);
-            ViewData["ProductId"] = new SelectList(_context.Products, "Id", "Color", orderProduct.ProductId);
-            return View(orderProduct);
-        }
-
-        // GET: OrderProducts/Delete/5
-        public async Task<IActionResult> Delete(long? id)
-        {
-            if (id == null || _context.OrderProducts == null)
-            {
-                return NotFound();
-            }
-
-            var orderProduct = await _context.OrderProducts
-                .Include(o => o.Order)
-                .Include(o => o.Product)
-                .FirstOrDefaultAsync(m => m.OrderId == id);
-            if (orderProduct == null)
-            {
-                return NotFound();
-            }
-
-            return View(orderProduct);
-        }
-
-        // OrderProducts/UpdateBasket/5&1/&false
         public async Task<ActionResult> Approve(long? id)
         {
             if (id == null || _context.Orders == null)
@@ -170,15 +39,12 @@ namespace OzSapkaTShirt.Controllers
             _context.SaveChanges();
             return View(order);
         }
-
         public Order UpDateBasket(long id, int quantity, bool delete)
         {
             Order? order;
             OrderProduct? orderProduct;
             string userIdentity = User.FindFirstValue(ClaimTypes.NameIdentifier);
             Product product = _context.Products.Find(id);
-
-
             order = _context.Orders
                             .Where(o => o.UserId == userIdentity && o.Status == 0)
                             .Include(o => o.OrderProducts).FirstOrDefault();
@@ -193,8 +59,6 @@ namespace OzSapkaTShirt.Controllers
                 _context.Add(order);
                 _context.SaveChanges();
             }
-
-
             orderProduct = order.OrderProducts.Find(op => op.ProductId == id);
             if (orderProduct == null)
             {
@@ -249,36 +113,5 @@ namespace OzSapkaTShirt.Controllers
             return order;
             // (byte)order.OrderProducts.Sum(op=>op.Quantity)
         }
-
-
-
-        private bool OrderProductExists(long id)
-        {
-            return (_context.OrderProducts?.Any(e => e.OrderId == id)).GetValueOrDefault();
-        }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     }
 }

@@ -481,12 +481,14 @@ a.page {
     display: flex;
     justify-content: space-around;
 }
-.onIzleme:hover{
-    transition:all ease 300ms;
-    transform:scale(1.05);
-    border-radius:1em;
-    box-shadow:1px 2px 1px 1px rgba(0,0,0,0.4);
+
+.onIzleme:hover {
+    transition: all ease 300ms;
+    transform: scale(1.05);
+    border-radius: 1em;
+    box-shadow: 1px 2px 1px 1px rgba(0,0,0,0.4);
 }
+
 .DetailImg {
     display: inline-block;
     margin-top: 2em;
@@ -557,22 +559,37 @@ a.page {
 .orderContainer {
     padding: 5em 2em;
     box-shadow: 1px 3px 2px 2px rgba(0,0,0,0.3);
-    background-color: lavender;
+    background-color: var(--clr-secondary);
     position: fixed;
     left: 0;
     top: 50%;
     transform: translateY(-50%);
 }
 
+.group {
+    margin-block: .5em;
+}
+
+.control-label {
+    margin-bottom: .5em;
+}
+
 .dates {
     display: flex;
-    justify-content:space-between;
+    justify-content: space-between;
 }
-.startDate,.endDate{
-    margin-right:1em;
-    background-color:none;
-    border:solid 1px rgba(0,0,0,0.2);
-    outline:none;
-    border-radius:1em;
-    padding:.5em;
+
+.startDate, .endDate {
+    margin-right: 1em;
+    background-color: none;
+    border: solid 1px rgba(0,0,0,0.2);
+    outline: none;
+    padding: .5em;
+}
+
+.search_btn {
+    background-color: black;
+    color: white;
+    padding: .4em 1.2em;
+    width: 100%;
 }

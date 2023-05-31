@@ -24,9 +24,6 @@ namespace OzSapkaTShirt.Controllers
             _signInManager = signInManager;
         }
 
-        // GET: Users
-
-        // GET: Userss/Details/5
         [Authorize]
         public async Task<IActionResult> Details(string? id)
         {
@@ -47,7 +44,6 @@ namespace OzSapkaTShirt.Controllers
             return View(user);
         }
 
-        // GET: Users/Create
         public IActionResult Create()
         {
             SelectList genders = new SelectList(_context.Genders, "Id", "Name");
@@ -58,12 +54,9 @@ namespace OzSapkaTShirt.Controllers
             return View();
         }
 
-        // POST: Users/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,SurName,Corporate,Address,Gender,BirthDate,UserName,Email,PhoneNumber,PassWord,ConfirmPassWord,CityCode")] ApplicationUser user)
+        public async Task<IActionResult> Create(ApplicationUser user)
         {
             IdentityResult? identityResult;
             SelectList genders, cities;
@@ -118,7 +111,7 @@ namespace OzSapkaTShirt.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize]
-        public async Task<IActionResult> Edit(string id, [Bind("Id,Name,SurName,Corporate,Address,Gender,BirthDate,UserName,Email,PhoneNumber,CityCode")] ApplicationUser user)
+        public async Task<IActionResult> Edit(string id, ApplicationUser user)
         {
             IdentityResult? identityResult;
             SelectList genders, cities;
@@ -198,11 +191,6 @@ namespace OzSapkaTShirt.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-        private bool UserExists(string id)
-        {
-            return (_userManager.Users?.Any(e => e.Id == id)).GetValueOrDefault();
-        }
-
         public IActionResult Login()
         {
             if ((Request.Cookies.ContainsKey("userName") & Request.Cookies.ContainsKey("passWord")))
@@ -214,9 +202,6 @@ namespace OzSapkaTShirt.Controllers
             return View();
         }
 
-        // POST: Users/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(ApplicationUser user)
@@ -261,9 +246,6 @@ namespace OzSapkaTShirt.Controllers
             return View();
         }
 
-        // POST: Users/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize]

@@ -65,7 +65,7 @@ public class ApplicationUser : IdentityUser
     public override string PhoneNumber { get => base.PhoneNumber; set => base.PhoneNumber = value; }
 
     [DisplayName("Şehir")]
-    public byte CityCode { get; set; }
+    public byte? CityCode { get; set; }
 
     [ForeignKey("CityCode")]
     public City? City { get; set; }

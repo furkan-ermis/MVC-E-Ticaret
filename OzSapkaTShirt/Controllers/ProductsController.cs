@@ -14,45 +14,29 @@ using System.Drawing.Imaging;
 
 namespace OzSapkaTShirt.Controllers
 {
-  public class ProductsController : Controller
-  {
-    private readonly ApplicationContext _context;
-
-    public ProductsController(ApplicationContext context)
+    public class ProductsController : Controller
     {
-      _context = context;
+        private readonly ApplicationContext _context;
+
+        public ProductsController(ApplicationContext context)
+        {
+            _context = context;
+        }
+        public async Task<IActionResult> Details(long? id)
+        {
+            if (id == null || _context.Products == null)
+            {
+                return NotFound();
+            }
+
+            var product = await _context.Products
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (product == null)
+            {
+                return NotFound();
+            }
+
+            return View(product);
+        }
     }
-
-    // GET: Products
-    public async Task<IActionResult> Index()
-    {
-      return _context.Products != null ?
-                  View(await _context.Products.ToListAsync()) :
-                  Problem("Entity set 'ApplicationContext.Product'  is null.");
-    }
-
-    // GET: Products/Details/5
-    public async Task<IActionResult> Details(long? id)
-    {
-      if (id == null || _context.Products == null)
-      {
-        return NotFound();
-      }
-
-      var product = await _context.Products
-          .FirstOrDefaultAsync(m => m.Id == id);
-      if (product == null)
-      {
-        return NotFound();
-      }
-
-      return View(product);
-    }
-
-    // GET: Products/Create
-
-    // GET: Products/Edit/5
-
-    // GET: Products/Delete/5
-  }
 }

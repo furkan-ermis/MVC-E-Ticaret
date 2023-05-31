@@ -12,6 +12,7 @@ using Microsoft.CodeAnalysis;
 namespace OzSapkaTShirt.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = "Administrator")]
     public class UsersController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;
@@ -98,23 +99,23 @@ namespace OzSapkaTShirt.Areas.Admin.Controllers
             ViewData["Products"] = products;
             return View();
         }
-        public PartialViewResult RaportsUserPartialView(long id, string UserID, DateTime start, DateTime end)
+        public PartialViewResult RaportsUserPartialView(long id, string UserID, DateTime start, DateTime? end = null)
         {
-            SelectList users, products;
-            users = new SelectList(_userManager.Users, "Id", "Name");
-            ViewData["Users"] = users;
-            products = new SelectList(_context.Products, "Id", "Name");
-            ViewData["Products"] = products;
-            List<Order> data = _context.Orders.Include(u => u.User).Include(op => op.OrderProducts).ThenInclude(p => p.Product).ToList();
+            if (end == null)
+            {
+                end = DateTime.Now;
+            }
+
+            IQueryable<Order> data = _context.Orders.Include(u => u.User).Include(op => op.OrderProducts).ThenInclude(p => p.Product).Where(a => start <= a.OrderDate && a.OrderDate <= end);
             if (UserID != null)
             {
-                data = data.Where(u => u.UserId == UserID).ToList();
+                data = data.Where(u => u.UserId == UserID);
             }
-            //if (id != null)
-            //{
-            //    data = data.Where(u => u.OrderProducts.);
-            //}
-            return PartialView("RaportsUserPartialView", data);
+            if (id != null)
+            {
+                data = data.Include(u => u.OrderProducts.Where(a => a.ProductId == id));
+            }
+            return PartialView("RaportsUserPartialView", data.ToList());
         }
     }
 }

@@ -11,14 +11,54 @@ namespace OzSapkaTShirt.Data
     public class EnsureCreated
     {
         private readonly ApplicationContext _context;
-        public EnsureCreated(ApplicationContext context)
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
+
+        //  ProgramCs içerisine bunları eklemek gerek
+        //      UserManager<ApplicationUser> userManager;
+        //      RoleManager<IdentityRole> roleManager;
+        //                  builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options => { options.SignIn.RequireConfirmedAccount = false; options.Password.RequireNonAlphanumeric = false; })
+        //                      .AddEntityFrameworkStores<ApplicationContext>();
+        //          context = app.Services.GetRequiredService<IServiceScopeFactory>().CreateScope().ServiceProvider.GetService<ApplicationContext>();
+        //          userManager = app.Services.CreateScope().ServiceProvider.GetService<UserManager<ApplicationUser>>();
+        //          roleManager = app.Services.CreateScope().ServiceProvider.GetService<RoleManager<IdentityRole>>();
+        //              EnsureCreated ensureCreated = new EnsureCreated(context, userManager, roleManager);
+
+        IdentityRole role;
+        public EnsureCreated(ApplicationContext context, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
         {
             _context = context;
+            _userManager = userManager;
+            _roleManager = roleManager;
             createGender();
             createCities();
             createCategory();
+            createAdminRole();
         }
+        public void createAdminRole()
+        {
+            if (_roleManager != null)
+            {
+                if (_roleManager.FindByNameAsync("Administrator").Result == null)
+                {
 
+                    role = new IdentityRole("Administrator");
+                    _roleManager.CreateAsync(role).Wait();
+                    ApplicationUser applicationUser = new ApplicationUser();
+                    applicationUser.UserName = "Administrator";
+                    applicationUser.Name = "Admin";
+                    applicationUser.SurName = "--";
+                    applicationUser.Address = "---";
+                    applicationUser.CityCode = 34;
+                    applicationUser.Email = "furkan.ermis@icloud.com";
+                    applicationUser.PhoneNumber = "5343656834";
+                    applicationUser.PassWord = "ABcd1234";
+                    applicationUser.ConfirmPassWord = "ABcd1234";
+                    _userManager.CreateAsync(applicationUser, "ABcd1234").Wait();
+                    _userManager.AddToRoleAsync(applicationUser, "Administrator").Wait();
+                }
+            }
+        }
         public void createGender()
         {
             if (!_context.Genders.Any())

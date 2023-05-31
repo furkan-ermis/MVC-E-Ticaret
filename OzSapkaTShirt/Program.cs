@@ -14,11 +14,13 @@ namespace OzSapkaTShirt
         {
             var builder = WebApplication.CreateBuilder(args);
             ApplicationContext context;
+            UserManager<ApplicationUser> userManager;
+            RoleManager<IdentityRole> roleManager;
 
             builder.Services.AddDbContext<ApplicationContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("ApplicationContext") ?? throw new InvalidOperationException("Connection string 'ApplicationContext' not found.")));
 
-            builder.Services.AddDefaultIdentity<ApplicationUser>(options => { options.SignIn.RequireConfirmedAccount = false; options.Password.RequireNonAlphanumeric = false; })
+            builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options => { options.SignIn.RequireConfirmedAccount = false; options.Password.RequireNonAlphanumeric = false; })
                 .AddEntityFrameworkStores<ApplicationContext>();
 
             // Add services to the container.
@@ -48,8 +50,9 @@ namespace OzSapkaTShirt
             app.UseSession();
 
             context = app.Services.GetRequiredService<IServiceScopeFactory>().CreateScope().ServiceProvider.GetService<ApplicationContext>();
-            
-            EnsureCreated ensureCreated=new EnsureCreated(context);
+            userManager = app.Services.CreateScope().ServiceProvider.GetService<UserManager<ApplicationUser>>();
+            roleManager = app.Services.CreateScope().ServiceProvider.GetService<RoleManager<IdentityRole>>();
+            EnsureCreated ensureCreated = new EnsureCreated(context, userManager, roleManager);
 
             app.Run();
         }
