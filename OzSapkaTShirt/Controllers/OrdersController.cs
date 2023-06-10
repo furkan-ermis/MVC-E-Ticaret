@@ -21,6 +21,11 @@ namespace OzSapkaTShirt.Controllers
         {
             _context = context;
         }
+        public async Task<IActionResult> Index()
+        {
+            var applicationContext = _context.Orders.Include(o => o.User).Include(op => op.OrderProducts).ThenInclude(p => p.Product).ThenInclude(c => c.Category);
+            return View(await applicationContext.ToListAsync());
+        }
         public async Task<IActionResult> Details()
         {
             string userIdentity = User.FindFirstValue(ClaimTypes.NameIdentifier);

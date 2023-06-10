@@ -1,10 +1,178 @@
 ﻿@model OzSapkaTShirt.Models.ApplicationUser
 
-
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "SignUp";
 }
 
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - OzSapkaTShirt</title>
+    <link rel="stylesheet" href="~/css/Login.css" asp-append-version="true" />
+        <meta charset="utf-8">
+    </head>
+
+    <body>
+    <div class="login-root">
+        <div class="box-root flex-flex flex-direction--column" style="min-height: 100vh;flex-grow: 1;">
+            <div class="loginbackground box-background--white padding-top--64">
+                <div class="loginbackground-gridContainer">
+                    <div class="box-root flex-flex" style="grid-area: top / start / 8 / end;">
+                        <div class="box-root" style="background-image: linear-gradient(white 0%, rgb(247, 250, 252) 33%); flex-grow: 1;">
+                        </div>
+                    </div>
+                    <div class="box-root flex-flex" style="grid-area: 4 / 2 / auto / 5;">
+                        <div class="box-root box-divider--light-all-2 animationLeftRight tans3s" style="flex-grow: 1;"></div>
+                    </div>
+                    <div class="box-root flex-flex" style="grid-area: 6 / start / auto / 2;">
+                        <div class="box-root box-background--blue800" style="flex-grow: 1;"></div>
+                    </div>
+                    <div class="box-root flex-flex" style="grid-area: 7 / start / auto / 4;">
+                        <div class="box-root box-background--blue animationLeftRight" style="flex-grow: 1;"></div>
+                    </div>
+                    <div class="box-root flex-flex" style="grid-area: 8 / 4 / auto / 6;">
+                        <div class="box-root box-background--gray100 animationLeftRight tans3s" style="flex-grow: 1;"></div>
+                    </div>
+                    <div class="box-root flex-flex" style="grid-area: 2 / 15 / auto / end;">
+                        <div class="box-root box-background--cyan200 animationRightLeft tans4s" style="flex-grow: 1;"></div>
+                    </div>
+                    <div class="box-root flex-flex" style="grid-area: 3 / 14 / auto / end;">
+                        <div class="box-root box-background--blue animationRightLeft" style="flex-grow: 1;"></div>
+                    </div>
+                    <div class="box-root flex-flex" style="grid-area: 4 / 17 / auto / 20;">
+                        <div class="box-root box-background--gray100 animationRightLeft tans4s" style="flex-grow: 1;"></div>
+                    </div>
+                    <div class="box-root flex-flex" style="grid-area: 5 / 14 / auto / 17;">
+                        <div class="box-root box-divider--light-all-2 animationRightLeft tans3s" style="flex-grow: 1;"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="box-root padding-top--24 flex-flex flex-direction--column" style="flex-grow: 1; z-index: 9;">
+                <div class="box-root padding-top--48 padding-bottom--24 flex-flex flex-justifyContent--center">
+                    <h1><a asp-action="index" asp-controller="Home" rel="dofollow">CapStone</a></h1>
+                </div>
+                <div class="formbg-outer">
+                    <div class="formbg">
+                        <div class="formbg-inner padding-horizontal--48">
+                            <span class="">Hesabına Giriş Yap</span>
+                            <form asp-action="Create" id="stripe-login">
+                                <div asp-validation-summary="ModelOnly" style="color:red;font-size:7px;"></div>
+
+                                <div class="field">
+                                    <label asp-for="Name" ></label>
+                                    <input asp-for="Name"  />
+                                    <span asp-validation-for="Name" style="color:red;font-size:7px;"></span>
+                                </div>
+
+                                <div class="field padding-bottom--24">
+                                    <label asp-for="SurName" ></label>
+                                    <input asp-for="SurName" />
+                                    <span asp-validation-for="SurName" style="color:red;font-size:7px;"></span>
+                                </div>
+
+                                <div style="display:flex;justify-content:space-evenly;">
+                                    <div>
+                                        <label asp-for="Corporate"></label>
+                                        <input type="checkbox" asp-for="Corporate" />
+                                        <span asp-validation-for="Corporate" style="color:red;font-size:7px;"></span>
+                                    </div>
+                                        <div>
+                                            <label asp-for="Gender"></label>
+                                        <select asp-for="Gender" style="padding:1em;border-color:lightgray;border-radius:1em;" asp-items="@ViewBag.Genders"></select>
+                                            <span asp-validation-for="Gender"></span>
+                                        </div>
+                                    <div>
+                                        <label asp-for="CityCode" class="control-label"></label>
+                                        <select asp-for="CityCode" style="padding:1em;border-color:lightgray;border-radius:1em;" class="form-control" asp-items="@ViewBag.Cities"></select>
+                                        <span asp-validation-for="CityCode" style="color:red;font-size:7px;"></span>
+                                    </div>
+                                </div>
+
+                                <div class="field">
+                                    <label asp-for="Address" ></label>
+                                    <input asp-for="Address"  />
+                                    <span asp-validation-for="Address" ></span>
+                                </div>
+
+                                <div style="display:flex;justify-content:space-evenly;">
+                                    <div style="margin-right:10px;"class="field padding-bottom--24">
+                                        <label asp-for="BirthDate" class="control-label"></label>
+                                        <input asp-for="BirthDate" class="form-control" />
+                                        <span asp-validation-for="BirthDate" style="color:red;font-size:7px;"></span>
+                                    </div>
+                                    <div class="field ">
+                                        <label asp-for="PhoneNumber" class="control-label"></label>
+                                        <input asp-for="PhoneNumber" class="form-control" />
+                                        <span asp-validation-for="PhoneNumber" style="color:red;font-size:7px;"></span>
+                                    </div>
+                                </div>
+                                <div class="field ">
+                                    <label asp-for="UserName" class="control-label"></label>
+                                    <input asp-for="UserName" class="form-control" />
+                                    <span asp-validation-for="UserName" style="color:red;font-size:7px;"></span>
+                                </div>
+                                <div class="field ">
+                                    <label asp-for="Email" class="control-label"></label>
+                                    <input asp-for="Email" class="form-control" />
+                                    <span asp-validation-for="Email" style="color:red;font-size:7px;"></span>
+                                </div>
+                                
+
+                                <div style="display:flex;justify-content:space-evenly;">
+                                    <div class="field " style="margin-right:10px;">
+                                        <div class="grid--50-50">
+                                            <label asp-for="PassWord" class="control-label"></label>
+                                            <span asp-validation-for="PassWord" style="color:red;font-size:7px;"></span>
+                                        </div>
+                                        <input asp-for="PassWord" class="form-control" value="@ViewBag?.password" />
+
+                                    </div>
+                                    <div class="field ">
+                                        <div class="grid--50-50">
+                                            <label>Tekrar</label>
+                                            <span asp-validation-for="ConfirmPassWord" style="color:red;font-size:7px;"></span>
+                                        </div>
+                                        <input asp-for="ConfirmPassWord" class="form-control" />
+
+                                    </div>
+                                </div>
+                                <br />
+                                
+                                <div class="field ">
+                                    <input type="submit" value="Create"/>
+
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="footer-link ">
+                        <span>Zaten Bir Hesabınız Var Mı? <a asp-action="Login">Giriş Yap</a></span>
+                        <div class="listing  flex-flex center-center">
+                            <span><a href="#">© CapStone</a></span>
+                            <span><a href="#">İletişim</a></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    </body>
+
+</html>
+
+
+
+
+
+
+
+
+@*
 <h1>Create</h1>
 
 <h4>User</h4>
@@ -82,10 +250,11 @@
 
 <div>
     <a asp-action="Index">Back to List</a>
-</div>
+</div>*@
 
 @section Scripts {
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
 }
+W

@@ -4,18 +4,22 @@
     ViewData["Title"] = "Home Page";
 }
 
+<h1 id="productName"></h1>
 
-     
-<div style="position:relative;" class="containerMain">
-    <a class="left" asp-area="" asp-action="ProductsByCategory" asp-controller="Home" asp-route-id="0">
-        <span style="position:absolute;color:white;font-weight:bolder;font-size:5em;top:1em;left:1em;">Hats</span>
-        <img class="hats" src="~/images/hats3.png" />
+<div class="__container">
+    <a asp-area="" asp-action="ProductsByCategory" asp-controller="Home" asp-route-id="0" id="__Hats" class="__section">
+        <div class="content">
+            <h1>Hats</h1>
+        </div>
+        <div class="overlay"></div>
     </a>
-    <a class="right"  asp-area="" asp-action="ProductsByCategory" asp-controller="Home" asp-route-id="1">
-        <div style="position:absolute;color:white;font-weight:bolder;font-size:5em;top:1em;right:1em;">Tshirts</div>
-        <img class="tshirts" src="~/images/TShırt4.png" />
+    <a asp-area="" asp-action="ProductsByCategory" asp-controller="Home" asp-route-id="1" id="__Tshirts" class="__section">
+        <div class="content">
+            <h1>Tshirts</h1>
+        </div>
+        <div class="overlay"></div>
     </a>
-</div>
+    </div>  
 <hr />
 <h2>En Çok Ziyaret Edilenler</h2>
 <script>
@@ -31,6 +35,30 @@
     function AddToBasket(productId) {
         $.post("@Url.Action("UpDateBasket","OrderProducts")/" + productId + "?quantity=1&delete=false", UpDateBasket, "json");
     }
+</script>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/aspnet-signalr/1.1.4/signalr.js
+"></script>
+<script>
+    var connection = new signalR.HubConnectionBuilder().withUrl("/ProductHub").build();
+
+
+    connection.start().then(function () {
+        console.log("start çalıştı")
+    }).catch(function (err) {
+        return console.log("start çalışmadı");
+    });
+
+    connection.on("showProduct", function (name) {
+        console.log("create gelen isim : " + name)
+        document.getElementById("productName").innerHTML = name
+    });
+
+
+
+
+
 </script>
 
 

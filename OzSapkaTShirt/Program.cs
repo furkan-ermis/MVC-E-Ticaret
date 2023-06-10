@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Identity;
 using OzSapkaTShirt.Models;
 using Microsoft.AspNetCore.Builder;
 using System.Security.Claims;
+using OzSapkaTShirt.Hubs;
 
 namespace OzSapkaTShirt
 {
@@ -24,6 +25,7 @@ namespace OzSapkaTShirt
                 .AddEntityFrameworkStores<ApplicationContext>();
 
             // Add services to the container.
+            builder.Services.AddSignalR();
             builder.Services.AddControllersWithViews();
             builder.Services.AddSession();
             var app = builder.Build();
@@ -39,7 +41,7 @@ namespace OzSapkaTShirt
             app.UseAuthentication();
 
             app.UseAuthorization();
-
+            app.MapHub<ProductHub>("/ProductHub");
             app.MapControllerRoute(
               name: "areas",
               pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}"

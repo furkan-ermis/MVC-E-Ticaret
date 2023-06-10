@@ -5,6 +5,7 @@
 }
 
 <h1>Create</h1>
+<h1 id="productName"></h1>
 
 <h4>Product</h4>
 <hr />
@@ -131,7 +132,7 @@
                 <span asp-validation-for="Image" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" id="createBtn" value="Create" class="btn btn-primary" />
             </div>
         </form>
  
@@ -141,6 +142,21 @@
 <div>
     <a asp-action="Index">Back to List</a>
 </div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/aspnet-signalr/1.1.4/signalr.js
+"></script>
+<script>
+    var connection = new signalR.HubConnectionBuilder().withUrl("/ProductHub").build();
+        connection.start();
+        connection.on("showProduct", function (name) {
+            document.getElementById("productName").innerHTML = name
+        });
+    document.getElementById("createBtn").addEventListener("click", function (event) {
+        connection.invoke("CreateProduct", document.getElementById("Name").value)
+    });
+</script>
+
+
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
