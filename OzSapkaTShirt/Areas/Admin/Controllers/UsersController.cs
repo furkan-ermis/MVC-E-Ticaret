@@ -99,22 +99,26 @@ namespace OzSapkaTShirt.Areas.Admin.Controllers
             ViewData["Products"] = products;
             return View();
         }
-        public PartialViewResult RaportsUserPartialView(long id, string UserID, DateTime start, DateTime? end = null)
+        public PartialViewResult RaportsUserPartialView(long id, string UserID, DateTime? start, DateTime? end = null)
         {
-            if (end == null)
+            IQueryable<Order> data = _context.Orders;
+            if (start != null)
             {
-                end = DateTime.Now;
+                data = data.Where(o => o.OrderDate >= start.Value);
             }
-
-            IQueryable<Order> data = _context.Orders.Include(u => u.User).Include(op => op.OrderProducts).ThenInclude(p => p.Product).Where(a => start <= a.OrderDate && a.OrderDate <= end);
+            if (end != null)
+            {
+                data = data.Where(o => o.OrderDate <= end.Value);
+            }
             if (UserID != null)
             {
-                data = data.Where(u => u.UserId == UserID);
+                data = data.Where(o => o.UserId == UserID);
             }
-            if (id != null)
-            {
-                data = data.Include(u => u.OrderProducts.Where(a => a.ProductId == id));
-            }
+            //if (reportModel.ProductId != null)
+            //{
+            //    orders = orders.Where(o => o.UserId == reportModel.UserId);
+            //}
+            data = data.Include(o => o.OrderProducts).ThenInclude(op => op.Product);
             return PartialView("RaportsUserPartialView", data.ToList());
         }
     }
