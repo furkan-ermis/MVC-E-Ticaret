@@ -1,5 +1,7 @@
 ﻿@using System.Security.Claims;
 @using Microsoft.AspNetCore.Http;
+@using Microsoft.AspNetCore.Identity;
+
 @inject IHttpContextAccessor HttpContextAccessor
 
 <!DOCTYPE html>
@@ -23,9 +25,7 @@
                     </a>
                 </div>
                 <ul class="menu">
-                    @*<li class="menu_page">
-                        <a class="page" asp-area="admin" asp-controller="Users" asp-action="OrderRaports">Order Raports</a>
-                    </li>*@
+                    
                 </ul>
                 <ul class="registerLogin user">
                     
@@ -33,6 +33,10 @@
 
                     @if (User.FindFirstValue(ClaimTypes.NameIdentifier) != null)
                     {
+                        
+                            <li class="account">
+                                <a class="page" asp-area="admin" asp-controller="Users">AdminPanel</a>
+                            </li>
                         <li class="basketIcon">
                             <a asp-area="" asp-action="index" asp-controller="Orders">
                                 <img class="sepet" src="~/images/sepet.png" />
@@ -41,7 +45,7 @@
                             </a>
                         </li>
                         <li class="account">
-                            <a asp-area="" asp-action="Details" asp-controller="Orders">Account</a>
+                            <a asp-area="" asp-controller="Users" asp-action="Edit" asp-route-id="@User.FindFirstValue(ClaimTypes.NameIdentifier)">Account</a>
                         </li>
                         <li class="logOut">
                             <a class="page" asp-area="" asp-controller="Users" asp-action="Logout">Logout</a>

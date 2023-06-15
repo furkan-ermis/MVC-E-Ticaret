@@ -215,6 +215,10 @@ namespace OzSapkaTShirt.Controllers
                     signInResult = _signInManager.PasswordSignInAsync(user.UserName, user.PassWord, false, false).Result;
                     if (signInResult.Succeeded == true)
                     {
+                        if (User.Identity.Name=="Administrator")
+                        {
+                            ViewBag.Admin = "admin";
+                        }
                         string userIdentity = User.FindFirstValue(ClaimTypes.NameIdentifier);
                         Order order = _context.Orders
                             .Where(o => o.UserId == userIdentity && o.Status == 0)

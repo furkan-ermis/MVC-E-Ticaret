@@ -111,6 +111,7 @@ namespace OzSapkaTShirt.Areas.Admin.Controllers
                 target = new MemoryStream();
                 product.Image.CopyTo(target); //Dosyayı stream'a kopyala
                 originalImage = Image.FromStream(target);
+
                 reSizedImage = ReSize(originalImage, 150, 200);
                 reSizedImage.Save(reSizedTarget, jPEGCodec, encoderParameters);
                 product.DBImage = reSizedTarget.ToArray();

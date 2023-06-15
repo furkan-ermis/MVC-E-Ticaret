@@ -27,36 +27,11 @@
                         <a class="page" asp-area="Admin" asp-controller="Users" asp-action="Index">Users</a>
                     </li>
                     <li class="menu_page">
-                        <a class="page" asp-area="" asp-controller="Products" asp-action="Index">Products</a>
+                        <a class="page" asp-area="Admin" asp-controller="Products" asp-action="Index">Products</a>
                     </li>
                     <li class="menu_page">
                         <a class="page" asp-area="admin" asp-controller="Users" asp-action="OrderRaports">Order Raports</a>
                     </li>
-                </ul>
-                <ul class="registerLogin">
-                        
-
-                    
-                    @if (User.FindFirstValue(ClaimTypes.NameIdentifier) != null)
-                    {
-                        <li class="">
-                            <a asp-area="" asp-action="index" asp-controller="OrderProducts"><img class="sepet" src="~/images/sepet.png" /></a>
-                        </li>
-                        <li class="account">
-                            <a asp-area="" asp-action="Details" asp-controller="Users" >Account</a>
-                        </li>
-                        <li class="logOut">
-                            <a class="page" asp-area="" asp-controller="Users" asp-action="Logout">Logout</a>
-                        </li>
-                    } else
-                    {
-                        <li class="signUp">
-                            <a class="page" asp-area="" asp-controller="Users" asp-action="Create">SignUp</a>
-                        </li>
-                        <li class="logIn">
-                            <a class="page" asp-area="" asp-controller="Users" asp-action="Login">Login</a>
-                        </li>
-                    }
                 </ul>
             </nav>
         </header>
